@@ -22,7 +22,8 @@
  *   '',  'bb'  => 'bb'
  */
 function concatenateStrings(value1, value2) {
-    throw new Error('Not implemented');
+    // throw new Error('Not implemented');
+    return value1 + value2;
 }
 
 
@@ -38,7 +39,7 @@ function concatenateStrings(value1, value2) {
  *   ''      => 0
  */
 function getStringLength(value) {
-    throw new Error('Not implemented');
+    return value.length;
 }
 
 /**
@@ -55,7 +56,7 @@ function getStringLength(value) {
  *   'Chuck','Norris'  => 'Hello, Chuck Norris!'
  */
 function getStringFromTemplate(firstName, lastName) {
-    throw new Error('Not implemented');
+    return `Hello, ${firstName} ${lastName}!`
 }
 
 /**
@@ -69,7 +70,7 @@ function getStringFromTemplate(firstName, lastName) {
  *   'Hello, Chuck Norris!' => 'Chuck Norris'
  */
 function extractNameFromTemplate(value) {
-    throw new Error('Not implemented');
+    return value.replace('Hello, ', '').replace('!', '');
 }
 
 
@@ -84,7 +85,7 @@ function extractNameFromTemplate(value) {
  *   'cat'       => 'c'
  */
 function getFirstChar(value) {
-    throw new Error('Not implemented');
+    return value[0];
 }
 
 /**
@@ -99,7 +100,7 @@ function getFirstChar(value) {
  *   '\tHello, World! ' => 'Hello, World!'
  */
 function removeLeadingAndTrailingWhitespaces(value) {
-    throw new Error('Not implemented');
+    return value.trim();
 }
 
 /**
@@ -114,7 +115,7 @@ function removeLeadingAndTrailingWhitespaces(value) {
  *   'cat', 3 => 'catcatcat'
  */
 function repeatString(value, count) {
-    throw new Error('Not implemented');
+    return value.repeat(count);
 }
 
 /**
@@ -130,7 +131,9 @@ function repeatString(value, count) {
  *   'ABABAB','BA' => 'ABAB'
  */
 function removeFirstOccurrences(str, value) {
-    throw new Error('Not implemented');
+    const idx = str.indexOf(value);
+    const len = value.length;
+    return str.substring(0, idx) + str.substring(idx+len, str.length);
 }
 
 /**
@@ -145,7 +148,7 @@ function removeFirstOccurrences(str, value) {
  *   '<a>' => 'a'
  */
 function unbracketTag(str) {
-    throw new Error('Not implemented');
+    return str.replace('<', '').replace('>', '');
 }
 
 
@@ -160,7 +163,7 @@ function unbracketTag(str) {
  *  'abcdefghijklmnopqrstuvwxyz' => 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
  */
 function convertToUpperCase(str) {
-    throw new Error('Not implemented');
+    return str.toUpperCase();
 }
 
 /**
@@ -174,7 +177,7 @@ function convertToUpperCase(str) {
  *   'info@gmail.com' => ['info@gmail.com']
  */
 function extractEmails(str) {
-    throw new Error('Not implemented');
+    return str.split(';');
 }
 
 /**
@@ -201,7 +204,11 @@ function extractEmails(str) {
  *
  */
 function getRectangleString(width, height) {
-    throw new Error('Not implemented');
+    const top = '┌' + '─'.repeat(width-2) + '┐' + '\n';
+    const bottom = '└' + '─'.repeat(width-2) + '┘' + '\n';
+    const vertical = '│' + ' '.repeat(width-2) + '│' + '\n';
+    const output = top + vertical.repeat(height-2) + bottom;
+    return output;
 }
 
 
@@ -221,7 +228,13 @@ function getRectangleString(width, height) {
  *
  */
 function encodeToRot13(str) {
-    throw new Error('Not implemented');
+    return str.replace(/[a-zA-Z]/g, (character) => {
+        return String.fromCharCode(
+            (character <= 'Z' ? 90 : 122) >= (character = character.charCodeAt(0) + 13)
+            ? character 
+            : character-26
+        );
+    })
 }
 
 /**
@@ -238,7 +251,7 @@ function encodeToRot13(str) {
  *   isString(new String('test')) => true
  */
 function isString(value) {
-    throw new Error('Not implemented');
+    return Object.prototype.toString.call(value) === "[object String]"
 }
 
 
@@ -267,9 +280,32 @@ function isString(value) {
  *   'K♠' => 51
  */
 function getCardId(value) {
-    throw new Error('Not implemented');
+    const club = '♣';
+    const diamond = '♦';
+    const heart = '♥';
+    const spade = '♠';
+    const typeOfCard = value.split('').reverse()[0];
+    let cardNumber;    
+    if (value.length > 2) {
+        cardNumber = value.split('')[0] + value.split('')[1];
+    } else {
+        cardNumber = value.split('')[0];
+    }
+    const dict = {'A':1, 'J':11, 'Q':12, 'K':13};
+    console.log(typeOfCard, cardNumber, dict[cardNumber]);
+    switch (typeOfCard) {
+        case club:
+            return (dict[cardNumber] !== undefined ? dict[cardNumber] - 1 : cardNumber - 1);
+        case diamond:
+            return (dict[cardNumber] !== undefined ? dict[cardNumber] - 1 : cardNumber - 1) + 13;
+        case heart:
+            return (dict[cardNumber] !== undefined ? dict[cardNumber] - 1 : cardNumber - 1) + 26;
+        case spade:
+            return (dict[cardNumber] !== undefined ? dict[cardNumber] - 1 : cardNumber - 1) + 39;
+        default:
+            return 0;
+    }
 }
-
 
 module.exports = {
     concatenateStrings: concatenateStrings,
